@@ -10,16 +10,17 @@
 #include "clock_config.h"
 #include "board.h"
 #include "fsl_debug_console.h"
-#include "fsl_gpio.h"
+#include "registers.h"
 
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-#define BOARD_LED_GPIOD     GPIOD
-#define BOARD_LED_GPIOC     GPIOC
+#define BOARD_LED_GPIOD     GPIO_D
+#define BOARD_LED_GPIOC     GPIO_C
 #define BLUE_PIN 8
 #define RED_PIN 1
 #define GREEN_PIN 9
+
 
 /*******************************************************************************
  * Prototypes
@@ -45,17 +46,13 @@ void delay(void)
     }
 }
 
+
+
 /*!
  * @brief Main function
  */
 int main(void)
 {
-    /* Define the init structure for the output LED pin*/
-    gpio_pin_config_t led_config = {
-        kGPIO_DigitalOutput,
-        0,
-    };
-
     /* Board pin, clock, debug console init */
     BOARD_InitBootPins();
     BOARD_InitBootClocks();
@@ -66,21 +63,28 @@ int main(void)
     PRINTF("\r\n The LED is blinking.\r\n");
 
     /* Init output LED GPIO. */
-    GPIO_PinInit(BOARD_LED_GPIOC, BLUE_PIN, &led_config);
-    GPIO_PinInit(BOARD_LED_GPIOC, GREEN_PIN, &led_config);
-    GPIO_PinInit(BOARD_LED_GPIOD, RED_PIN, &led_config);
+    GPIO_Init(BOARD_LED_GPIOC, BLUE_PIN);
+    GPIO_Init(BOARD_LED_GPIOC, GREEN_PIN);
+    GPIO_Init(BOARD_LED_GPIOD, RED_PIN);
 
     while (1)
     {
 
-        GPIO_PortToggle(BOARD_LED_GPIOC, 1u << BLUE_PIN);
+        GPIO_Toggle(BOARD_LED_GPIOC, 1u << BLUE_PIN);
         delay();
-        GPIO_PortToggle(BOARD_LED_GPIOC, 1u << BLUE_PIN);
-        GPIO_PortToggle(BOARD_LED_GPIOC, 1u << GREEN_PIN);
+        GPIO_Toggle(BOARD_LED_GPIOC, 1u << BLUE_PIN);
+        GPIO_Toggle(BOARD_LED_GPIOC, 1u << GREEN_PIN);
         delay();
-        GPIO_PortToggle(BOARD_LED_GPIOC, 1u << GREEN_PIN);
-        GPIO_PortToggle(BOARD_LED_GPIOD, 1u << RED_PIN);
+        GPIO_Toggle(BOARD_LED_GPIOC, 1u << GREEN_PIN);
+    	GPIO_Toggle(BOARD_LED_GPIOD, 1u << RED_PIN);
+		delay();
+		GPIO_Toggle(BOARD_LED_GPIOD, 1u << RED_PIN);
+		delay();
+        GPIO_On(BOARD_LED_GPIOC, 1u << BLUE_PIN);
+        GPIO_On(BOARD_LED_GPIOD, 1u << RED_PIN);
         delay();
-        GPIO_PortToggle(BOARD_LED_GPIOD, 1u << RED_PIN);
+        GPIO_Off(BOARD_LED_GPIOC, 1u << BLUE_PIN);
+        GPIO_Off(BOARD_LED_GPIOD, 1u << RED_PIN);
+
     }
 }
