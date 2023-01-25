@@ -6,22 +6,16 @@
 C_SRCS += \
 ../source/Problem1.c \
 ../source/Problem2.c \
-../source/Problem3.c \
-../source/Problem4.c \
 ../source/semihost_hardfault.c 
 
 C_DEPS += \
 ./source/Problem1.d \
 ./source/Problem2.d \
-./source/Problem3.d \
-./source/Problem4.d \
 ./source/semihost_hardfault.d 
 
 OBJS += \
 ./source/Problem1.o \
 ./source/Problem2.o \
-./source/Problem3.o \
-./source/Problem4.o \
 ./source/semihost_hardfault.o 
 
 
@@ -37,7 +31,7 @@ source/%.o: ../source/%.c source/subdir.mk
 clean: clean-source
 
 clean-source:
-	-$(RM) ./source/Problem1.d ./source/Problem1.o ./source/Problem2.d ./source/Problem2.o ./source/Problem3.d ./source/Problem3.o ./source/Problem4.d ./source/Problem4.o ./source/semihost_hardfault.d ./source/semihost_hardfault.o
+	-$(RM) ./source/Problem1.d ./source/Problem1.o ./source/Problem2.d ./source/Problem2.o ./source/semihost_hardfault.d ./source/semihost_hardfault.o
 
 .PHONY: clean-source
 
